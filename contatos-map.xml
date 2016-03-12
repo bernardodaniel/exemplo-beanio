@@ -1,0 +1,33 @@
+<beanio xmlns="http://www.beanio.org/2012/03">
+
+  <!-- 'format' identifica o tipo de entrada -->
+  <stream name="contatos" format="csv" strict="true">
+    <!-- 'class' = "map" vincula o cabeçalho para um java.util.HashMap -->
+    <record name="cabecalho" class="map" occurs="1">
+      <!-- 'rid' indica que este campo é usado para identificar o tipo de registro -->
+      <field name="tipoRegistro" rid="true" literal="H" />
+      <!-- 'format' pode ser usado para informar o formato de datas e números -->
+      <field name="dataArquivo" type="date" format="yyyy-MM-dd" required="true" />
+    </record>  
+  
+    <!-- Tipo de registro Detalhe que será convertido em objetos de examplo.Contato -->
+    <record name="contato" class="exemplo.Contato" occurs="0+">
+      <!-- 'ignore' indica que este arquivo não será vinculado a uma propriedade da classe Contato -->
+      <field name="tipoRegistro" rid="true" literal="D" ignore="true" />
+      <field name="nome" maxLength="20" />
+      <field name="sobrenome" required="true" maxLength="30" />
+      <field name="rua" maxLength="30" />
+      <field name="cidade" maxLength="25" />
+      <field name="estado" minLength="2" maxLength="2" />
+      <field name="cep" regex="\d{5}" />
+    </record>
+
+    <!-- 'target' vincula o tipo de registro rodape para o campo quantidade -->
+    <record name="rodape" target="quantidade" occurs="1">
+      <!-- 'literal' é utilizado para definir valores constantes -->
+      <field name="tipoRegistro" rid="true" literal="T" />
+      <field name="quantidade" type="int" required="true" />
+    </record>  
+    
+  </stream>
+</beanio>
